@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pentru tine ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(#ff9a9e, #fad0c4);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: black;
+}
+
+.card {
+  background: rgba(255,255,255,0.25);
+  padding: 35px 25px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+#text {
+  font-size: 24px;
+  line-height: 1.5;
+  min-height: 80px;
+  animation: fadeUp 0.6s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#buttons {
+  margin-top: 25px;
+  position: relative;
+  height: 140px;
+}
+
+button {
+  padding: 16px 34px;
+  font-size: 20px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  background: #ff4d6d;
+  color: white;
+}
+
+#nu {
+  position: absolute;
+}
+
+input[type=range] {
+  width: 85%;
+}
+
+#value {
+  font-weight: bold;
+  margin: 10px 0;
+  display: block;
+}
+
+.float {
+  position: absolute;
+  font-size: 24px;
+  pointer-events: none;
+  animation: floatUp 6s linear forwards;
+}
+
+@keyframes floatUp {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-100vh); }
+}
+
+@media (max-width: 480px) {
+  #text { font-size: 26px; }
+  button { font-size: 22px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div id="text">Ești pregătită? 💖</div>
+  <div id="buttons">
+    <button id="da">DA</button>
+    <button id="nu">NU</button>
+  </div>
+</div>
+
+<audio id="music">
+  <source src="melodie.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const steps = [
+  {t:"q", v:"Ești fericită că ai vrut să facem zile pe snap? 🤭❤️"},
+  {t:"q", v:"Crezi că sunt prea supărăcios? 🫣"},
+  {t:"q", v:"Îți place vocea mea? ❤️"},
+  {t:"q", v:"Te simți iubită și fericită lângă mine? 🥹❤️"},
+  {t:"q", v:"Mă ierți pentru că te supăr atât de des? 🥹❤️"},
+  {t:"q", v:"Îți place când sunt dulce și te alint? ❤️"},
+  {t:"q", v:"Îți place când îți cânt? Crezi că am talent muzical? 🤭"},
+  {t:"q", v:"Zâmbești când îți trimit poze cu mine fără să îmi ceri? 🤭❤️"},
+  {t:"q", v:"Mă ierți pentru momentele când sunt răuț cu tine? 🥹❤️"},
+  {t:"q", v:"Crezi că sunt un dulcețuc? 🤭❤️"},
+  {t:"q", v:"Îți place să te drăgălesc și să te pup când vorbim pe cameră? ❤️"},
+  {t:"q", v:"Dacă ar fi să mă alegi din nou, ai face-o? ❤️"},
+  {t:"q", v:"Simți mereu cât de mult te iubesc? ❤️"},
+  {t:"q", v:"Te simți norocoasă că mă ai? ❤️"},
+  {t:"q", v:"Abia aștepți să mă pupi non stop? 🥹❤️"},
+  {t:"q", v:"Îți place când mă comport ca un copil? ❤️"},
+  {t:"q", v:"Simți că sunt iubirea vieții tale? ❤️"},
+  {t:"slider", v:"Cât de mult mă iubești?"},
+  {t:"slider", v:"Cât de nerăbdătoare ești să ne vedem? ❤️"},
+  {t:"text", v:"Îți mulțumesc că ai stat alături de mine într-o perioadă grea din viața mea.."},
+  {t:"text", v:"Îți mulțumesc că nu ai renunțat la mine și că mi-ai suportat toate stările ❤️"},
+  {t:"text", v:"Îți mulțumesc pentru că alături de tine am învățat și simt ce e iubirea adevărată, fără să ating un corp mă simt fericit și împlinit ❤️"},
+  {t:"text", v:"Lângă tine mă simt iubit, dorit, apreciat, respectat, simt că contez cu adevărat 🥹"},
+  {t:"text", v:"Fără îndoială ești iubirea vieții mele ❤️"},
+  {t:"final"}
+];
+
+let i = -1;
+let moving = false;
+const text = document.getElementById("text");
+const buttons = document.getElementById("buttons");
+const music = document.getElementById("music");
+
+function hearts() {
+  const el = document.createElement("div");
+  el.className = "float";
+  el.innerText = Math.random() > 0.5 ? "❤️" : "🌸";
+  el.style.left = Math.random()*window.innerWidth+"px";
+  el.style.top = "100%";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),6000);
+}
+setInterval(hearts, 450);
+
+function next() {
+  i++;
+  const s = steps[i];
+  buttons.innerHTML = "";
+
+  if (i === 0) music.play();
+
+  if (!s) return;
+
+  text.style.animation="none"; void text.offsetHeight;
+  text.style.animation="fadeUp 0.6s ease";
+
+  if (s.t === "q") {
+    text.innerText = s.v;
+    const da = document.createElement("button");
+    da.innerText="DA";
+    da.onclick=next;
+
+    const nu = document.createElement("button");
+    nu.id="nu";
+    nu.innerText="NU";
+    nu.onclick=()=>{ if(!moving){ move(nu); } };
+
+    buttons.appendChild(da);
+    buttons.appendChild(nu);
+  }
+
+  if (s.t === "slider") {
+    text.innerText = s.v;
+    buttons.innerHTML = `
+      <input type="range" min="0" max="100000000" value="50000000" id="r">
+      <span id="value">50000000</span>
+      <button onclick="next()">Next</button>
+    `;
+    const r=document.getElementById("r");
+    const v=document.getElementById("value");
+    r.oninput=()=>v.innerText=r.value;
+  }
+
+  if (s.t === "text") {
+    text.innerText = s.v;
+    const b=document.createElement("button");
+    b.innerText="Next";
+    b.onclick=next;
+    buttons.appendChild(b);
+  }
+
+  if (s.t === "final") {
+    text.innerText="Ne vedem curând ❤️";
+    buttons.innerHTML=`<button onclick="location.reload()">Începe din nou</button>`;
+  }
+}
+
+function move(btn){
+  moving=true;
+  setInterval(()=>{
+    btn.style.left=Math.random()*200+"px";
+    btn.style.top=Math.random()*100+"px";
+  },300);
+}
+
+document.getElementById("da").onclick=next;
+document.getElementById("nu").onclick=()=>{ if(!moving){ move(document.getElementById("nu")); } };
+</script>
+
+</body>
+</html>
